@@ -1,17 +1,25 @@
 ---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CatalogSection from '../components/CatalogSection.astro';
 
+const tools = await getCollection('tools');
 ---
+<BaseLayout title="patientvibes-agents" description="Public catalog of skills, tools, and harnesses for AI agent work — auto-pulled from each source repo.">
+  <section class="text-center py-16">
+    <h1 class="text-4xl font-bold tracking-tight">patientvibes-agents</h1>
+    <p class="mt-4 text-lg text-zinc-600 max-w-2xl mx-auto">
+      A public catalog of skills, tools, and harnesses for AI agent work.
+      Each entry's docs are pulled live from its source repo.
+    </p>
+    <div class="mt-6 text-sm text-zinc-500">
+      <a href="/marketplace/" class="underline">Skills marketplace</a>
+      <span class="mx-2">·</span>
+      <a href="https://github.com/PatientVibes" class="underline">GitHub</a>
+    </div>
+  </section>
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+  <CatalogSection title="Skills" kind="skill" tools={tools} />
+  <CatalogSection title="Tools" kind="tool" tools={tools} />
+  <CatalogSection title="Harnesses" kind="harness" tools={tools} />
+</BaseLayout>

@@ -1,0 +1,34 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const tools = await getCollection('tools');
+const sorted = tools.sort((a, b) => a.data.slug.localeCompare(b.data.slug));
+---
+<BaseLayout title="All entries" description="All skills, tools, and harnesses — flat list.">
+  <h1 class="text-3xl font-bold">All entries</h1>
+  <p class="text-zinc-600 mt-2">{sorted.length} entries across {new Set(sorted.map((t) => t.data.kind)).size} kinds.</p>
+
+  <table class="mt-8 w-full text-sm">
+    <thead class="text-left text-xs uppercase text-zinc-500 border-b">
+      <tr>
+        <th class="py-2 pr-4">Name</th>
+        <th class="py-2 pr-4">Kind</th>
+        <th class="py-2 pr-4">Status</th>
+        <th class="py-2">Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      {sorted.map((t) => (
+        <tr class="border-b border-zinc-100 hover:bg-zinc-50">
+          <td class="py-3 pr-4 font-mono">
+            <a href={`/tools/${t.data.slug}/`} class="hover:underline">{t.data.name}</a>
+          </td>
+          <td class="py-3 pr-4 text-zinc-500">{t.data.kind}</td>
+          <td class="py-3 pr-4 font-mono text-zinc-500">{t.data.status}</td>
+          <td class="py-3 text-zinc-700">{t.data.shortDescription}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</BaseLayout>

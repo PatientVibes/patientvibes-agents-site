@@ -1,0 +1,46 @@
+---
+import { getCollection, render } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const tools = await getCollection('tools');
+  return tools.map((t) => ({ params: { slug: t.data.slug }, props: { tool: t } }));
+};
+
+const { tool } = Astro.props;
+const { Content } = await render(tool);
+const { name, kind, status, githubUrl, shortDescription, pulledAt } = tool.data;
+const isUnavailable = status === 'unavailable';
+---
+<BaseLayout title={name} description={shortDescription}>
+  <header class="border-b border-zinc-200 pb-6 mb-8">
+    <div class="flex items-start justify-between gap-4 flex-wrap">
+      <div>
+        <div class="text-xs uppercase tracking-wide text-zinc-500 font-mono">{kind}</div>
+        <h1 class="text-3xl font-bold font-mono mt-1">{name}</h1>
+      </div>
+      <div class="flex gap-3 items-center text-sm">
+        <span class="font-mono px-2 py-1 rounded bg-zinc-100">{status}</span>
+        <a href={githubUrl} class="underline">View on GitHub ↗</a>
+      </div>
+    </div>
+    <p class="text-zinc-600 mt-3">{shortDescription}</p>
+  </header>
+
+  {isUnavailable ? (
+    <div class="rounded border border-amber-300 bg-amber-50 p-4 text-amber-900 text-sm">
+      The latest README for this repo couldn't be fetched in the most recent build.
+      See <a href={githubUrl} class="underline">{githubUrl}</a> for current documentation.
+    </div>
+  ) : (
+    <article class="prose prose-zinc max-w-none prose-pre:bg-zinc-900 prose-headings:font-semibold">
+      <Content />
+    </article>
+  )}
+
+  <footer class="mt-12 pt-6 border-t border-zinc-200 text-xs text-zinc-400">
+    README fetched at <time datetime={pulledAt}>{new Date(pulledAt).toUTCString()}</time>.
+    Source: <a href={githubUrl} class="underline">{githubUrl}</a>.
+  </footer>
+</BaseLayout>
