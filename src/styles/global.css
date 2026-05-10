@@ -1,0 +1,11 @@
+@import "tailwindcss";
+
+@plugin "@tailwindcss/typography";
+
+/* Anchor links injected by rehype-autolink-headings */
+.heading-anchor {
+  opacity: 0;
+  margin-left: 0.25em;
+  text-decoration: none;
+}
+:hover > .heading-anchor { opacity: 0.5; }

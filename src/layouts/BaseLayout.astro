@@ -1,0 +1,39 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+const { title, description } = Astro.props;
+const fullTitle = title === 'patientvibes-agents' ? title : `${title} — patientvibes-agents`;
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{fullTitle}</title>
+  {description && <meta name="description" content={description} />}
+  <link rel="canonical" href={Astro.url.href} />
+</head>
+<body class="bg-zinc-50 text-zinc-900 font-sans antialiased">
+  <header class="border-b border-zinc-200 px-6 py-4">
+    <nav class="max-w-5xl mx-auto flex justify-between items-center">
+      <a href="/" class="font-mono font-semibold">patientvibes-agents</a>
+      <ul class="flex gap-4 text-sm">
+        <li><a href="/tools/" class="hover:underline">All</a></li>
+        <li><a href="/marketplace/" class="hover:underline">Marketplace</a></li>
+        <li><a href="/about/" class="hover:underline">About</a></li>
+        <li><a href="https://patientvibes.io" class="hover:underline">↗ patientvibes.io</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main class="max-w-5xl mx-auto px-6 py-12">
+    <slot />
+  </main>
+  <footer class="border-t border-zinc-200 px-6 py-6 text-sm text-zinc-500 text-center">
+    Built from <a href="https://github.com/PatientVibes/patientvibes-agents-site" class="underline">patientvibes-agents-site</a> · READMEs auto-pulled from each source repo
+  </footer>
+</body>
+</html>
