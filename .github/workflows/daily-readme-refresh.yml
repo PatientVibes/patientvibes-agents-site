@@ -1,0 +1,21 @@
+name: Daily README refresh
+on:
+  schedule:
+    - cron: "0 13 * * *"      # 13:00 UTC = 7:00 AM Central
+  workflow_dispatch:
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Cloudflare Pages rebuild
+        env:
+          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+          CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+          CF_PAGES_PROJECT: patientvibes-agents-site
+        run: |
+          set -euo pipefail
+          curl -fsS -X POST \
+            "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT_ID/pages/projects/$CF_PAGES_PROJECT/deployments" \
+            -H "Authorization: Bearer $CF_API_TOKEN" \
+            | jq '.result.id // .errors'

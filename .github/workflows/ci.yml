@@ -1,0 +1,56 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+    env:
+      # Build smoke test uses fixture READMEs — avoids CI flake on GitHub rate limits
+      # and removes any external dependency for build correctness checking.
+      READMES_FIXTURE_DIR: __fixtures__/readmes
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci
+      - name: Run unit tests
+        run: npm test
+      - name: Check manifest drift
+        env:
+          # github.mjs picks this up automatically when set — bumps the rate
+          # limit from 60/hr unauth to 5000/hr. secrets.GITHUB_TOKEN is
+          # auto-provisioned by Actions, no setup required.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm run check-manifest-drift
+      - name: Build site (fixture-driven smoke)
+        run: npm run build
+      - name: Upload dist for link check
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+          retention-days: 1
+
+  link-check:
+    runs-on: ubuntu-latest
+    needs: test-and-build
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - name: Check internal links with lychee
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: >-
+            --offline --no-progress --include-fragments
+            --exclude '^https?://'
+            './dist/**/*.html'
+          fail: true
