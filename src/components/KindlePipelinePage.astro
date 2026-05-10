@@ -7,8 +7,22 @@ const { githubUrl, pulledAt } = Astro.props;
 ---
 <style is:global>
   /* Apply base typography styles ONLY when this page is rendered.
-     Scoped via body:has(.pp) so non-v2 pages keep their Tailwind chrome. */
+     Scoped via body:has(.pp) so non-v2 pages keep their Tailwind chrome.
+     base.css is intentionally not imported globally to avoid leaking these
+     resets (box-sizing, body bg/font-family) onto Tailwind pages — instead
+     we inline only the class rules KindlePipelinePage actually uses. */
   body:has(.pp) { background: var(--pv-bg); color: var(--pv-ink); font-family: var(--pv-font-sans); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  .pv-small { font-size: 13.5px; line-height: 1.55; color: var(--pv-mute); }
+  .pv-quote {
+    font-family: var(--pv-font-serif);
+    font-style: italic;
+    font-size: 32px;
+    line-height: 1.15;
+    color: var(--pv-ink);
+    border-left: 2px solid var(--pv-sage);
+    padding: 4px 0 4px 18px;
+    letter-spacing: var(--pv-track-tight);
+  }
 </style>
 
 <style>
