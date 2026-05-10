@@ -12,7 +12,8 @@
     "astro": "astro",
     "pull-readmes": "node scripts/pull-readmes.mjs",
     "prebuild": "npm run pull-readmes",
-    "test": "vitest run"
+    "test": "vitest run",
+    "check-manifest-drift": "node scripts/check-manifest-drift.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.2",
