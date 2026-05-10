@@ -42,10 +42,15 @@ export async function fetchRepoMeta(org, slug) {
   return get(`/repos/${org}/${slug}`);
 }
 
-export async function fetchOrgRepos(org) {
+export async function fetchOrgRepos(owner) {
   // For manifest drift check. Returns array of repo objects.
-  // Pagination: at the 30-default we fit comfortably under the 60/hr limit.
-  return get(`/orgs/${org}/repos?per_page=100&type=public`);
+  // PatientVibes is a USER account, not an org — /orgs/<owner>/repos 404s.
+  // /users/<owner>/repos works for both user and org owners (GitHub's
+  // user-repos endpoint silently includes the case where <owner> is an org),
+  // so we use it unconditionally. We filter by visibility downstream.
+  // Pagination: per_page=100 fits comfortably under the unauth 60/hr limit
+  // for the modest repo counts under this owner.
+  return get(`/users/${owner}/repos?per_page=100`);
 }
 
 export function decodeBase64(content) {
