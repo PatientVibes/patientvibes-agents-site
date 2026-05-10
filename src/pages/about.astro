@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="About" description="What this catalog is and how it relates to the larger PatientVibes ecosystem.">
+  <h1 class="text-3xl font-bold">About patientvibes-agents</h1>
+
+  <p class="text-zinc-700 mt-4">
+    This site is a public catalog of skills, tools, and harnesses for AI agent work,
+    built and maintained by Chris Moore. Every entry's documentation is auto-pulled
+    from its source repo's <code class="font-mono px-1 bg-zinc-100">README.md</code> at build time —
+    so what you see here matches what's in the repo within roughly 24 hours.
+  </p>
+
+  <h2 class="text-xl font-semibold mt-10">How it's organized</h2>
+  <ul class="list-disc pl-6 mt-3 space-y-2 text-zinc-700">
+    <li><strong>Skills</strong> are Claude Code plugins distributed via the
+      <a href="/marketplace/" class="underline">patientvibes-skills marketplace</a>.</li>
+    <li><strong>Tools</strong> are standalone CLIs / libraries — installable via <code class="font-mono">uv tool install</code>.</li>
+    <li><strong>Harnesses</strong> orchestrate multiple tools into pipelines.</li>
+  </ul>
+
+  <h2 class="text-xl font-semibold mt-10">Architecture deep-dives</h2>
+  <p class="text-zinc-700 mt-3">
+    The portfolio narrative — including the 12-component agent harness pattern, retrospectives,
+    and longer-form essays — lives at <a href="https://patientvibes.io" class="underline">patientvibes.io</a>.
+    This subdomain stays focused on what the tools do and how to install them.
+  </p>
+
+  <h2 class="text-xl font-semibold mt-10">Source</h2>
+  <p class="text-zinc-700 mt-3">
+    The site itself is open source:
+    <a href="https://github.com/PatientVibes/patientvibes-agents-site" class="underline">
+      github.com/PatientVibes/patientvibes-agents-site</a>.
+  </p>
+</BaseLayout>
