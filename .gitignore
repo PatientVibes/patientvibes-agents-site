@@ -1,0 +1,27 @@
+# Astro
+.astro/
+dist/
+.cache/
+
+# Node
+node_modules/
+npm-debug.log*
+*.log
+
+# Build artifacts
+src/content/tools/*.md
+!src/content/tools/.gitkeep
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+
+# Test
+coverage/
